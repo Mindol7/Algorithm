@@ -17,15 +17,15 @@ class BST{
             if(!node){
                 return new Node(key);
             }
+
             if(key < node->val){
                 node->left = insertNode(node->left, key);
             }
             else{
                 node->right = insertNode(node->right, key);
             }
-            return node;
         }
-
+        
         bool searchNode(Node* node, int key){
             if(!node){
                 return false;
@@ -37,7 +37,7 @@ class BST{
             return (key < node->val) ? searchNode(node->left, key) : searchNode(node->right, key);
         }
 
-        Node* findMin(Node* node, int key){
+        Node* findMin(Node* node){
             while(node && node->left){
                 node = node->left;
             }
@@ -48,41 +48,37 @@ class BST{
             if(!node){
                 return nullptr;
             }
+            
             if(key < node->val){
                 node->left = deleteNode(node->left, key);
             }
             else if(key > node->val){
                 node->right = deleteNode(node->right, key);
             }
-            else{
-                // Case 1
-                if(!node->left && !node->right){
-                    delete node;
-                    return nullptr;
-                }
 
-                // Case 2
-                if(!node->left){
-                    Node* tmp = node->right;
-                    delete node;
-                    return tmp;
-                }
-                if(!node->right){
-                    Node* tmp = node->left;
-                    delete node;
-                    return tmp;
-                }
-
-                Node* successor = findMin(node->right, key);
-                node->val = successor->val;
-                node->right = deleteNode(node->right, successor->val);
+            if(!node->left && !node->right){
+                delete node;
+                return nullptr;
+            }
+            if(!node->left){
+                Node* tmp = node->right;
+                delete node;
+                return tmp;
+            }
+            if(!node->right){
+                Node* tmp = node->left;
+                delete node;
+                return tmp;
             }
 
-            return node;
+            Node* successor = findMin(node->right);
+            node->val = successor->val;
+            node->right = deleteNode(node->right, successor->val);
+
         }
-    
+
     public:
-        BST(): root(nullptr) {};
+        BST() : root(nullptr) {}
         void insert(int key){
             root = insertNode(root, key);
         }
