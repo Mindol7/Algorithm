@@ -1,0 +1,7 @@
+SELECTION-SORT(A)
+1: for i = 0 to n-2
+2:  min <- i
+3:  for(j = i+1 to n-1)
+4:   if(A[j] < A[min])
+5:      min <- j
+6:  swap(A[i], A[min])
